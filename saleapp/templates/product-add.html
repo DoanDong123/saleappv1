@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Quan Ly San Pham</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center">Quan Ly San Pham</h1>
+        <form  method="post">
+            <div class="form-group">
+                <label>Ten San Pham</label>
+                <input type="text" name="name" class="form-control" value="{{product.name}}" />
+            </div>
+            <div class="form-group">
+                <label>Mo ta</label>
+                <input type="text" name="description" class="form-control" value="{{product.description}}" />
+            </div>
+            <div class="form-group">
+                <label>Gia</label>
+                <input type="text" name="price" class="form-control" value="{{product.price}}" />
+            </div>
+            <div class="form-group">
+                <label>Anh</label>
+                <input type="text" name="image" class="form-control" value="{{product.image}}" />
+            </div>
+            <div class="form-group">
+                <label>Category</label>
+                <select class="form-control" name="category">
+                    {% for cat in categories %}
+                        {% if product.category == cat.id %}
+                        <option value="{{cat.id}}" selected>{{cat.name}}</option>
+                        {% else %}
+                        <option value="{{cat.id}}" >{{cat.name}}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <input class="btn btn-primary" type="submit" value="{% if product %}Cap Nhat{% else %}Them{% endif %} San Pham"/>
+            </div>
+            {% if err_msg %}
+                <span>{{err_msg}}</span>
+            {% endif %}
+        </form>
+
+    </div>
+</body>
+</html>
