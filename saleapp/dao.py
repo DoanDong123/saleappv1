@@ -1,10 +1,12 @@
 import json
 from saleapp import app
+from functools import wraps
 import os
+import hashlib
 
 
 def read_products(keyword=None, from_price=None, to_price=None):
-    with open(os.path.join(app.root_path,'data/products.json'), encoding="utf-8") as f:
+    with open(os.path.join(app.root_path, 'data/products.json'), encoding="utf-8") as f:
         products = json.load(f)
 
     if keyword:
@@ -19,7 +21,7 @@ def read_products(keyword=None, from_price=None, to_price=None):
 
 
 def read_categories():
-    with open(os.path.join(app.root_path,'data/categories.json'), encoding="utf-8") as f:
+    with open(os.path.join(app.root_path, 'data/categories.json'), encoding="utf-8") as f:
         categories = json.load(f)
     return categories
 
@@ -57,6 +59,18 @@ def update_product(product_id, name, description, price, image, category):
             break
 
     return update_product_json(products)
+"""
+    idx = vị trí
+    p = đối tượng 
+"""
+def delete_product(product_id):
+    products = read_products()
+    for idx, p in enumerate(products):
+        if p["id"] == product_id:
+            del products[idx]
+            break
+
+    return update_product_json()
 
 def update_product_json(products):
     try:
@@ -79,6 +93,38 @@ def read_products_by_cate_id(cate_id):
     #
     # return result
 
+
+def load_users():
+    with open(os.path.join(app.root_path, "data/users.json"), encoding="utf-8") as f:
+        return json.load(f)
+
+
+def add_user(name, username, password):
+    users = load_users()
+    user = {
+        "id": len(users) + 1,
+        "name": name,
+        "username": username,
+        "password": str(hashlib.md5(password.strip().encode("utf-8")).hexdigest())
+    }
+
+    users.append(user)
+
+    with open(os.path.join(app.root_path, 'data/users.json'), "w", encoding="utf-8") as f:
+        json.dump(users, f, ensure_ascii=False, indent=4)
+
+    return user
+
+
+def check_login(username, password):
+    users = load_users()
+
+    password = str(hashlib.md5(password.strip().encode("utf-8")).hexdigest())
+    for u in users:
+        if u["username"].strip() == username.strip() and u["password"] == password:
+            return u
+
+    return None
 
 
 

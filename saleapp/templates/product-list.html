@@ -3,7 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <title>Quản Lý sản phẩm</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
 <!--    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" />-->
+    <script>
+        function delProduct(productId) {
+            fetch("/api/pro/" + productId, {
+                "method": "delete"
+            }).then(res => res.json()).then(res => {
+                if (res.status == 200) {
+                    var d = document.getElementById("product" + res.product_id);
+                    d.style.display = "None";
+                }
+            }).catch(catch(function(err) {
+
+            });
+        }
+    </script>
 </head>
 <body>
     <div>
@@ -22,7 +38,7 @@
 
         <table border="1" width="100%">
             {% for product in products %}
-            <tr>
+            <tr id="product{{product.id}}">
                 <td>
                     <img width="20%" src="{{ product.image }}" alt="{{ product.name }}"/>
                 </td>
@@ -33,13 +49,13 @@
                 <td>{{ "{:,.1f}".format(product.price) }} VND</td>
                 <td>
                     <a href="{{ url_for('product_add', product_id = product.id) }}">Cập nhật</a> |
-                    <a href="#">Xóa</a>
+                    <a href="javascript:;" onclick="delProduct({{ product.id }})">Xóa</a>
                 </td>
             </tr>
             {% endfor %}
         </table>
 
-        <a class="btn btn-primary" href="{{ url_for('product_add') }}" >Them San Pham</a>
+        <a class="btn btn-primary" href="{{ url_for('product_add', product_id = '') }}" >Them San Pham</a>
     </div>
 </body>
 </html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center text-success">DANG Ky Tai Khoan</h1>
+        {% if err_msg %}
+        <div class="alert alert-danger">
+            <h2>{{ err_msg }}</h2>
+        </div>
+        {% endif %}
+        <form method="post">
+            <div class="form-group">
+                <input type="text" placeholder="Name..." name="name" class="form-control" required />
+            </div>
+            <div class="form-group">
+                <input type="text" placeholder="Username..." name="username" class="form-control" required />
+            </div>
+            <div class="form-group">
+                <input type="password" placeholder="Password..." name="password" class="form-control" required />
+            </div>
+            <div class="form-group">
+                <input type="password" placeholder="Confirm ..." name="confirm" class="form-control" required />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Login"  class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</body>
+</html>
