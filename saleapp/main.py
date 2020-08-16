@@ -5,6 +5,7 @@ from saleapp import decorator
 from functools import wraps
 
 
+
 @app.route("/")
 def index():
     return render_template("index.html")

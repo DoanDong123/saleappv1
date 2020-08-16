@@ -1,6 +1,7 @@
 from sqlalchemy import Column, Integer, String, Float, ForeignKey
 from sqlalchemy.orm import relationship
 from saleapp import db
+from flask_admin.contrib.sqla import ModelView
 
 class Category(db.Model):
     __tablename__ = "category"
@@ -25,6 +26,7 @@ class Product(db.Model):
 
     def __str__(self):
         return self.name
+
 
 if __name__ == "__main__":
     db.create_all()
