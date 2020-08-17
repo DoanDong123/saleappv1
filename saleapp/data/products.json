@@ -56,13 +56,5 @@
         "price": 50.0,
         "image": "Tranh",
         "category_id": 2
-    },
-    {
-        "id": 8,
-        "name": "122123213",
-        "description": "2",
-        "price": 23.0,
-        "image": "213123213",
-        "category_id": 1
     }
 ]

@@ -15,14 +15,29 @@
                     var d = document.getElementById("product" + res.product_id);
                     d.style.display = "None";
                 }
-            }).catch(catch(function(err) {
+            }).catch(function (err) {
 
             });
+        }
+
+        function addToCart(id, name, price) {
+            fetch("/api/cart", {
+                body: JSON.stringify({
+                    "product_id": id,
+                    "name": name,
+                    "price": price
+                }),
+                method: "post",
+                headers: {"Content-Type": "application/json"}
+            }).then(res => res.json()).then(data => {
+                var cart = document.getElementById("cartId");
+                cart.innerText = `(${data.quantity})`;
+            })
         }
     </script>
 </head>
 <body>
-    <div>
+    <div class="container">
         <h1>QUẢN LÝ SẢN PHẨM</h1>
 
         <form action="{{ url_for('product_list') }}">
@@ -35,8 +50,20 @@
             </div>
             <input type="submit" value="Tìm" />
         </form>
+        <div>
+            <a href="{{ url_for('cart')}}">Giỏ hàng</a> <span class="badge badge-dark" id="cartId">0</span>
+        </div>
 
-        <table border="1" width="100%">
+        <table  class="table table">
+            <thead>
+            <tr>
+                <th scope="col">Ảnh</th>
+                <th scope="col">Tên sản phẩm</th>
+                <th scope="col">Mô tả</th>
+                <th scope="col">Giá</th>
+                <th scope="col">Thao tác</th>
+            </tr>
+            </thead>
             {% for product in products %}
             <tr id="product{{product.id}}">
                 <td>
@@ -48,6 +75,7 @@
                 <td>{{ product.description }}</td>
                 <td>{{ "{:,.1f}".format(product.price) }} VND</td>
                 <td>
+                    <a href="javascript:;" onclick="addToCart({{ product.id }}, '{{ product.name }}', {{ product.price }})">Thêm vào giỏ</a> |
                     <a href="{{ url_for('product_add', product_id = product.id) }}">Cập nhật</a> |
                     <a href="javascript:;" onclick="delProduct({{ product.id }})">Xóa</a>
                 </td>
@@ -55,7 +83,7 @@
             {% endfor %}
         </table>
 
-        <a class="btn btn-primary" href="{{ url_for('product_add', product_id = '') }}" >Them San Pham</a>
+        <a class="btn btn-primary" href="{{ url_for('product_add', product_id = '') }}" >Thêm Sản Phẩm</a>
     </div>
 </body>
 </html>

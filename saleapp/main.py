@@ -3,12 +3,13 @@ from saleapp import app
 from saleapp import dao
 from saleapp import decorator
 from functools import wraps
+import json
 
 
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    return render_template("index2.html")
 
 
 @app.route("/products")
@@ -110,6 +111,33 @@ def register():
 
     return render_template("register.html", err_msg=err_msg)
 
+@app.route("/cart")
+def cart():
+    return render_template("payment.html")
+
+@app.route("/api/cart", methods=["post"])
+def add_to_cart():
+    data = json.loads(request.data)
+    product_id = data.get("product_id")
+    name = data.get("name")
+    price = data.get("price")
+    if "cart" not in session:
+        session["cart"] = {}
+
+    cart = session["cart"]
+    product_key = str(product_id)
+    if product_key in cart: # da tung bo sp product_id vao gio
+        cart[product_key]["quantity"] = cart[product_key]["quantity"] + 1
+    else: # bo sp moi vao gio
+        cart[product_key] = {
+            "id": product_id,
+            "name": name,
+            "price": price,
+            "quantity": 1
+        }
+    session["cart"] = cart
+
+    return jsonify({"success": 1, "quantity": sum([c["quantity"] for c in list(session["cart"].values())])})
 
 if __name__ == "__main__":
     app.run(debug=True)

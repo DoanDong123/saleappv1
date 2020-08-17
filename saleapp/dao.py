@@ -66,11 +66,11 @@ def update_product(product_id, name, description, price, image, category):
 def delete_product(product_id):
     products = read_products()
     for idx, p in enumerate(products):
-        if p["id"] == product_id:
+        if p["id"] == int(product_id):
             del products[idx]
             break
 
-    return update_product_json()
+    return update_product_json(products)
 
 def update_product_json(products):
     try:
