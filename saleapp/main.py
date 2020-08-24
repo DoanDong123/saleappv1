@@ -113,6 +113,8 @@ def register():
 
 @app.route("/cart")
 def cart():
+    if "cart" not in session:
+        session["cart"] = {}
     return render_template("payment.html")
 
 @app.route("/api/cart", methods=["post"])
@@ -140,4 +142,5 @@ def add_to_cart():
     return jsonify({"success": 1, "quantity": sum([c["quantity"] for c in list(session["cart"].values())])})
 
 if __name__ == "__main__":
+    from saleapp.admin import  *
     app.run(debug=True)
